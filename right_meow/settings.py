@@ -53,7 +53,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "users.middleware.TimezoneMiddleware",
+    "users.middleware.TimezoneMiddleware",
 ]
 
 ROOT_URLCONF = "right_meow.urls"
