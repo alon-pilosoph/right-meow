@@ -43,23 +43,20 @@ class Post(models.Model):
         return self.comments.count()
 
     def save(self, *args, **kwargs):
-        """Method that redices the image quality before saving the model instance."""
-        # If the model has an id field (if it was already saved)
-        if self.id is not None:
-            this_post = Post.objects.get(id=self.id)
-            # If the current image of the post is different than the one being saved
-            if this_post.image != self.image:
-                filename, extension = splitext(basename(self.image.name))
-                # If file extension is jpg, jpeg or png
-                if extension in [".jpg", ".jpeg", ".png"]:
-                    # Reduce the quality of the image before uploading it
-                    img = Image.open(self.image)
-                    img = ImageOps.exif_transpose(img)
-                    output = BytesIO()
-                    img.convert("RGB").save(output, format="JPEG", quality=70)
-                    # Save image as jpg
-                    new_image = File(output, name=filename + ".jpg")
-                    self.image = new_image
+        """Method that reduces the image quality before saving the model instance."""
+        # If instance has no id (post was just created) or instace image was changed
+        if self.id is None or Post.objects.get(id=self.id).image != self.image:
+            filename, extension = splitext(basename(self.image.name))
+            # If file extension is jpg, jpeg or png
+            if extension in [".jpg", ".jpeg", ".png"]:
+                # Reduce the quality of the image before uploading it
+                img = Image.open(self.image)
+                img = ImageOps.exif_transpose(img)
+                output = BytesIO()
+                img.convert("RGB").save(output, format="JPEG", quality=70)
+                # Save image as jpg
+                new_image = File(output, name=filename + ".jpg")
+                self.image = new_image
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

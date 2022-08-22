@@ -53,11 +53,11 @@ class Profile(models.Model):
         return reverse("profile_detail", kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
-        """Method that redices the image quality before saving the model instance."""
-        # If the model has an id field (if it was already saved)
+        """Method that reduces the image quality before saving the model instance."""
+        # If instace has an id field (if it was already saved)
         if self.id is not None:
             this_profile = Profile.objects.get(id=self.id)
-            # If the current picture of the profile is different than the one being saved
+            # If the current profile picture is different than the one being saved
             if this_profile.picture != self.picture:
                 filename, extension = splitext(basename(self.picture.name))
                 # If file extension is jpg, jpeg or png
