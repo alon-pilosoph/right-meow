@@ -52,6 +52,9 @@ class Post(models.Model):
                 # Reduce the quality of the image before uploading it
                 img = Image.open(self.image)
                 img = ImageOps.exif_transpose(img)
+                # If image width is over 600px, resize it to 600px (while keeping the ratio)
+                if img.width > 600:
+                    img = img.resize((600, img.height * 600 // img.width))
                 output = BytesIO()
                 img.convert("RGB").save(output, format="JPEG", quality=70)
                 # Save image as jpg
