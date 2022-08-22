@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="post flex flex-col bg-base-100 rounded-xl shadow-custom mb-5">
+    <div class="flex flex-row items-start justify-between">
+        <div class="flex items-center flex-row">
+            <a href="{{ post.author.get_absolute_url }}" class="rounded-full flex-shrink-0 m-3 mr-2">
+                <img class="profile-pic w-16 h-16 rounded-full" src="{{ post.author.picture.url }}">
+            </a>
+            <div class="user-text">
+                <p class="font-semibold">
+                    <a href="{{ post.author.get_absolute_url }}" class="link link-hover">{{ post.author.name }}</a>
+                </p>
+                <div class="flex flex-row text-sm text-accent">
+                    {% if post.public %}
+                        <span class="tooltip tooltip-accent tooltip-bottom" data-tip="Public">
+                            <i class="fa-solid fa-earth-americas"></i>
+                        </span>
+                    {% else %}
+                        <span class="tooltip tooltip-accent tooltip-bottom" data-tip="Private">
+                            <i class="fa-solid fa-user-group"></i>
+                        </span>
+                    {% endif %}
+                    <div class="tooltip tooltip-bottom tooltip-accent cursor-default ml-1"
+                        data-tip="{{ post.last_modified|date:" M j, Y \a\t g:i A" }}">
+                        <span class="text-sm text-accent">{{ post.last_modified|naturaltime }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if user == post.author.user %}
+            <div class="flex-shrink-0">
+                <div class="dropdown dropdown-end m-3">
+                    <label class="cursor-pointer" tabindex="0"><i class="fa-solid fa-angle-down"></i></label>
+                    <ul tabindex="0" class="dropdown-content border menu shadow bg-base-100 w-52">
+                        <li><a href="{% url 'post_update' slug=post.author.slug pk=post.id %}">Edit</a></li>
+                        <li><label for="delete-modal">Delete</label></li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    {% if post.image %}
+        <img class="py-3 pt-0" src="{{ post.image.url }}">
+    {% endif %}
+    <div class="user-text text-lg font-semibold p-3 pt-0">
+        {{ post.text|linebreaks }}
+    </div>
+    <div class="flex flex-row justify-between px-3 py-1">
+        <label for="likes-modal" class="like-list-label link link-hover" data-id="{{ post.id }}" data-target="post">
+            <span class="likes">
+                {% if post.total_likes %}
+                    {{ post.total_likes }} Like{% if post.total_likes > 1 %}s{% endif %}
+                {% endif %}
+            </span>
+        </label>
+        <a href="#comments" class="link link-hover">
+            <span id="comment-count">
+                {% if post.total_comments %}
+                    {{ post.total_comments }} Comment{% if post.total_comments > 1 %}s{% endif %}
+                {% endif %}
+            </span>
+        </a>
+    </div>
+    <div class="border-t border-b flex flex-row">
+        <div class="tooltip tooltip-accent w-1/2 border-r hover:bg-indigo-100 text-center hover:text-error{% if user.profile in post.likes.all %} text-error{% else %} text-accent{% endif %}"
+            data-tip="{% if user.profile in post.likes.all %}Unlike{% else %}Like{% endif %}">
+            <button class="like-button fa-solid fa-heart text-xl w-full py-2" value="{{post.id}}"></button>
+        </div>
+        <div class="tooltip tooltip-accent w-1/2 hover:bg-indigo-100 text-center text-accent hover:text-primary"
+            data-tip="Comment">
+            <a href="{{ post.get_absolute_url }}#comment" class="fa-solid fa-comment text-xl w-full py-2"></a>
+        </div>
+    </div>
+    <div id="comments" class="flex flex-col text-gray-700 px-3 mt-3">
+        {% for comment in post.comments.all %}
+            <div id="comment{{ comment.id }}" class="flex flex-row items-start mb-3">
+                <a href="{{ comment.author.get_absolute_url }}"
+                    class="rounded-full bg-red-100 mr-2 flex-shrink-0 w-10 h-10">
+                    <img class="profile-pic rounded-full" src="{{ comment.author.picture.url }}">
+                </a>
+                <div class="flex flex-col items-start w-full">
+                    <div class="flex flex-row items-end">
+                        <div class="user-text bg-neutral rounded-lg px-2 py-1">
+                            <p class="font-semibold -mb-1"><a class="link link-hover"
+                                    href="{{ comment.author.get_absolute_url }}">{{ comment.author.name }}</a></p>
+                            <p>{{ comment.text|linebreaks }}</p>
+                        </div>
+                        <label for="likes-modal" class="like-list-label link link-hover" data-id="{{ comment.id }}"
+                            data-target="comment">
+                            <span class="comment-likes whitespace-nowrap text-sm">
+                                {% if comment.likes.count %}
+                                    <i class="ml-2 text-error fa-solid fa-heart mr-1"></i>{{comment.likes.count}}
+                                {% endif %}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="w-full text-sm pl-2 mt-1">
+                        <button
+                            class="like-comment link link-hover mr-3 font-semibold{% if user.profile in comment.likes.all %} link-primary{% endif %}"
+                            value="{{ comment.id }}">Like</button>
+                        {% if user.profile == comment.author or user.profile == post.author %}
+                            <button class="delete-comment link link-hover mr-3 font-semibold"
+                                value="{{ comment.id }}">Delete</button>
+                        {% endif %}
+                        <div class="tooltip tooltip-bottom tooltip-accent cursor-default"
+                            data-tip="{{ comment.date_created|date:" M j, Y \a\t g:i A" }}">
+                            <span class="text-accent">{{ comment.date_created|naturaltime }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div id="comment" class="flex flex-row items-start mb-3">
+            <img class="profile-pic w-10 h-10 rounded-full mr-2 flex-shrink-0" src="{{ user.profile.picture.url }}">
+            <form id="comment-form" method="POST" action="" class="flex flex-col items-end w-full">
+                <textarea id="input-comment" class="bg-neutral w-full rounded-xl shadow focus:outline-0 p-2" rows="1"
+                    placeholder="Write a comment..." maxlength="250" required></textarea>
+            </form>
+        </div>
+    </div>
+</div>
+
+<input type="checkbox" id="delete-modal" class="modal-toggle">
+<div class="modal">
+    <div class="modal-box">
+        <form method="POST" action="{% url 'post_delete' slug=post.author.slug pk=post.id %}">
+            {% csrf_token %}
+            <h3 class="text-lg font-bold">Delete Post</h3>
+            <p class="py-4">This post will be permanently deleted. Are you sure you want to delete it?</p>
+            <div class="text-center">
+                <label for="delete-modal" class="btn btn-neutral no-animation mr-1">Cancel</label>
+                <button class="btn btn-error hover:bg-rose-600 no-animation" type="submit">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<input type="checkbox" id="likes-modal" class="modal-toggle" autocomplete="off">
+<div class="modal">
+    <div class="modal-box relative">
+        <label for="likes-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <h3 class="text-lg font-bold mb-3">Likes</h3>
+        <div id="like-list"></div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+{% include 'partials/_likes_ajax.html' %}
+{% include 'partials/_comments_ajax.html' %}
+<script>
+    $(document).ready(() => {
+        $('textarea').on('input', function () {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        $("#input-comment").keydown(function (e) {
+            if (e.key == 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if ($("#input-comment").val().length) {
+                    $('#comment-form').submit();
+                }
+            }
+        });
+    });
+</script>
+{% endblock javascript %}

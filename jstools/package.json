@@ -1,0 +1,19 @@
+{
+  "name": "jstools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "tailwind-watch": "tailwindcss -i ../static/css/input.css -o ../static/css/output.css --watch",
+    "tailwind-build": "tailwindcss -i ../static/css/input.css -o ../static/css/output.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.1.8"
+  },
+  "dependencies": {
+    "daisyui": "^2.22.0"
+  }
+}

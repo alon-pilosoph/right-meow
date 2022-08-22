@@ -1,0 +1,51 @@
+<nav
+    class="w-0 lg:w-72 h-0 lg:h-min sticky top-5 flex flex-col rounded-xl overflow-y-hidden bg-base-100 shadow-custom my-5">
+    <a href="{% url 'home' %}">
+        <div class="bg-primary text-base-100 text-center py-3">
+            <i class="fa-solid fa-paw text-2xl mr-1"></i>
+            <span class="font-semibold text-xl">Right Meow</span>
+        </div>
+    </a>
+    <a href="{{ user.profile.get_absolute_url }}" class="hover:bg-indigo-100 hover:text-primary">
+        <div class="flex flex-row items-center m-2">
+            <img class="profile-pic w-16 h-16 rounded-full" src="{{ user.profile.picture.url }}">
+            <div class="user-text flex flex-col ml-2">
+                <span class="font-semibold">{{ user.profile.name }}</span>
+                <span class="text-gray-400 italic">{{ user.profile.user.username }}</span>
+            </div>
+        </div>
+    </a>
+    <div class="w-full flex flex-col hover:cursor-pointer">
+        <a class="hover:bg-indigo-100 text-accent hover:text-primary" href="{% url 'home' %}">
+            <div class="flex flex-row justify-between items-center font-semibold px-3 py-2">
+                <span>Home</span>
+                <i class="fa-solid text-lg fa-house"></i>
+            </div>
+        </a>
+        <a class="hover:bg-indigo-100 border-t text-accent hover:text-primary" href="{% url 'search' %}">
+            <div class="flex flex-row justify-between items-center font-semibold px-3 py-2">
+                <span>Search</span>
+                <i class="fa-solid text-lg fa-magnifying-glass"></i>
+            </div>
+        </a>
+        <a class="hover:bg-indigo-100 border-t text-accent hover:text-primary"
+            href="{{ user.profile.get_absolute_url }}">
+            <div class="flex flex-row justify-between items-center font-semibold px-3 py-2">
+                <span>Profile</span>
+                <i class="fa-solid fa-paw text-lg"></i>
+            </div>
+        </a>
+        <a class="hover:bg-indigo-100 border-t text-accent hover:text-primary" href="{% url 'settings' %}">
+            <div class="flex flex-row justify-between items-center font-semibold px-3 py-2">
+                <span>Settings</span>
+                <i class="fa-solid fa-cog text-lg"></i>
+            </div>
+        </a>
+        <a class="hover:bg-indigo-100 border-t text-accent hover:text-primary" href="{% url 'logout' %}">
+            <div class="flex flex-row justify-between items-center font-semibold px-3 py-2">
+                <span>Log out</span>
+                <i class="fa-solid fa-right-from-bracket text-lg"></i>
+            </div>
+        </a>
+    </div>
+</nav>

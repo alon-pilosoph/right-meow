@@ -1,0 +1,8 @@
+<footer
+    class="bg-primary text-base-100 text-3xl py-3 fixed bottom-0 w-full lg:w-0 flex flex-row justify-around lg:hidden z-50">
+    <a href="{% url 'home' %}"><i class="fa-solid fa-house"></i></a>
+    <a href="{% url 'search' %}"><i class="fa-solid fa-magnifying-glass"></i></a>
+    <a href="{{ user.profile.get_absolute_url }}"><i class="fa-solid fa-paw"></i></a>
+    <a href="{% url 'settings' %}"><i class="fa-solid fa-cog"></i></a>
+    <a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i></a>
+</footer>

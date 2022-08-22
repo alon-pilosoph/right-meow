@@ -1,0 +1,43 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background-image: url("https://res.cloudinary.com/dbx3a0ync/image/upload/v1660661982/Right%20Meow/cat_pattern_light_mevezm.jpg");
+    background-size: 500px 500px;
+}
+
+textarea {
+    resize: none;
+}
+
+.shadow-custom {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.modal-box {
+    max-width: 400px;
+}
+
+.profile-pic {
+    object-fit: cover;
+}
+
+.user-text {
+    word-break: break-word;
+}
+
+#landing {
+    min-height: 100vh;
+    background-image: url("https://res.cloudinary.com/dbx3a0ync/image/upload/v1660661983/Right%20Meow/cat_pattern_dark_viuvgs.jpg");
+    background-size: 500px 500px;
+}
+
+#main {
+    max-width: 600px;
+}
+
+#landing-dialog {
+    max-width: 400px;
+}

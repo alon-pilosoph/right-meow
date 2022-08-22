@@ -1,0 +1,29 @@
+{% load humanize %}
+
+<div id="comment{{ comment.id }}" class="flex flex-row items-start mb-3">
+    <a href="{{ comment.author.get_absolute_url }}" class="rounded-full flex-shrink-0 w-10 h-10 mr-2">
+        <img class="profile-pic rounded-full" src="{{ comment.author.picture.url }}">
+    </a>
+    <div class="flex flex-col items-start w-full">
+        <div class="flex flex-row items-end">
+            <div class="user-text bg-neutral rounded-lg px-2 py-1">
+                <p class="font-semibold -mb-1"><a class="link link-hover"
+                        href="{{ comment.author.get_absolute_url }}">{{ comment.author.name }}</a></p>
+                <p>{{ comment.text|linebreaks }}</p>
+            </div>
+            <label for="likes-modal" class="like-list-label link link-hover" data-id="{{ comment.id }}"
+                data-target="comment">
+                <span class="comment-likes whitespace-nowrap text-sm">
+                </span>
+            </label>
+        </div>
+        <div class="w-full text-sm pl-2 mt-1">
+            <button class="like-comment link link-hover font-semibold mr-3" value="{{ comment.id }}">Like</button>
+            <button class="delete-comment link link-hover font-semibold mr-3" value="{{ comment.id }}">Delete</button>
+            <div class="tooltip tooltip-bottom tooltip-accent cursor-pointer" 
+                data-tip="{{ comment.date_created|date:" M j, Y \a\t g:i A" }}">
+                <span class="text-accent">{{ comment.date_created|naturaltime }}</span>
+            </div>
+        </div>
+    </div>
+</div>

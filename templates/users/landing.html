@@ -1,0 +1,96 @@
+{% extends 'base_landing.html' %}
+{% load static %}
+
+{% block head %}
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+{% endblock head %}
+
+{% block content %}
+<div class="tabs">
+    <button id="login-tab" class="tab font-semibold text-lg tab-bordered {% if tab == "login" %}tab-active {% endif %}w-1/2">Login</button>
+    <button id="register-tab" class="tab font-semibold text-lg tab-bordered {% if tab == "register" %}tab-active {% endif %}w-1/2">Register</button>
+</div>
+<div id="login-form" class="{% if tab != "login" %}hidden {% endif %}p-3">
+    <form method="POST" class="flex flex-col w-full" novalidate>
+        {% csrf_token %}
+        <label for="{{ login_form.username.id_for_label }}" 
+            class="font-semibold">{{ login_form.username.label }}*</label>
+        <input name="{{ login_form.username.html_name }}" type="text"
+            class="input text-base {% if login_form.username.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+            id="{{ login_form.username.id_for_label }}"{% if login_form.username.value %} value="{{ login_form.username.value }}"{% endif %} required>
+        {% for error in login_form.username.errors %}
+            <div class="text-error text-sm">{{ error }}</div>
+        {% endfor %}
+        <label for="{{ login_form.password.id_for_label }}" class="font-semibold mt-2">{{ login_form.password.label }}*</label>
+        <input name="{{ login_form.password.html_name }}" type="password"
+            class="input input-bordered text-base {% if login_form.password.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+            id="{{ login_form.password1.id_for_label }}" required>
+        {% for error in login_form.password.errors %}
+            <div class="text-error text-sm">{{ error }}</div>
+        {% endfor %}
+        <a class="link link-hover link-primary text-sm mt-2" href="{% url 'password_reset' %}">Forgot password?</a>
+        <button type="submit" class="btn btn-primary no-animation w-full mt-4" name="login">Login</button>
+    </form>
+</div>
+<div id="register-form" class="{% if tab != "register" %}hidden {% endif %}p-3">
+    <form method="POST" class="flex flex-col w-full" novalidate>
+        {% csrf_token %}
+        <label for="{{ profile_form.name.id_for_label }}" class="font-semibold">{{ profile_form.name.label }}*</label>
+        <input name="{{ profile_form.name.html_name }}" type="text"
+            class="input text-base {% if profile_form.name.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+            id="{{ profile_form.name.id_for_label }}"{% if profile_form.name.value %} value="{{ profile_form.name.value }}"{% endif %} required>
+        {% for error in profile_form.name.errors %}
+            <div class="text-error text-sm">{{ error }}</div>
+        {% endfor %}
+        <label for="{{ register_form.username.id_for_label }}" class="font-semibold mt-2">{{ register_form.username.label }}*</label>
+        <input name="{{ register_form.username.html_name }}" type="text"
+            class="input text-base {% if register_form.username.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+            id="{{ register_form.username.id_for_label }}"{% if register_form.username.value %} value="{{ register_form.username.value }}"{% endif %} required>
+        {% for error in register_form.username.errors %}
+            <div class="text-error text-sm">{{ error }}</div>
+        {% endfor %}
+        <label for="{{ register_form.email.id_for_label }}" class="font-semibold mt-2">{{ register_form.email.label }}</label>
+        <input name="{{ register_form.email.html_name }}" type="email"
+            class="input text-base {% if register_form.email.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+            id="{{ register_form.email.id_for_label }}"{% if register_form.email.value %} value="{{ register_form.email.value }}"{% endif %} required>
+        {% for error in register_form.email.errors %}
+            <div class="text-error text-sm">{{ error }}</div>
+        {% endfor %}
+        <label for="{{ register_form.password1.id_for_label }}" class="font-semibold mt-2">{{ register_form.password1.label }}*</label>
+        <input name="{{ register_form.password1.html_name }}" type="password"
+            class="input input-bordered text-base {% if register_form.password1.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+            id="{{ register_form.password1.id_for_label }}" required>
+        {% for error in register_form.password1.errors %}
+            <div class="text-error text-sm">{{ error }}</div>
+        {% endfor %}
+        <label for="{{ register_form.password2.id_for_label }}" class="font-semibold mt-2">{{ register_form.password2.label }}*</label>
+        <input name="{{ register_form.password2.html_name }}" type="password"
+            class="input input-bordered text-base {% if register_form.password2.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+            id="{{ register_form.password2.id_for_label }}" required>
+        {% for error in register_form.password2.errors %}
+            <div class="text-error text-sm">{{ error }}</div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary no-animation w-full mt-4" name="register">Register</button>
+    </form>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script>
+    $(document).ready(() => {
+        $('#login-tab').click((e) => {
+            $('#login-tab').addClass('tab-active');
+            $('#register-tab').removeClass('tab-active');
+            $('#login-form').show();
+            $('#register-form').hide();
+        });
+
+        $('#register-tab').click(() => {
+            $('#login-tab').removeClass('tab-active');
+            $('#register-tab').addClass('tab-active');
+            $('#login-form').hide();
+            $('#register-form').show();
+        });
+    });
+</script>
+{% endblock javascript %}

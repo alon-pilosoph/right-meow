@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static "favicon.svg" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
+    <link rel="stylesheet" href="{% static "css/app.css" %}">
+    {% block head %}{% endblock head %}
+    {% block title %}
+    <title>Right Meow</title>
+    {% endblock title %}
+</head>
+<body id="landing" class="bg-indigo-100 flex flex-col justify-start items-center">
+    <div id="landing-dialog" class="w-full flex flex-col p-5">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if 'error' in message.tags %}alert-error{% else %}alert-success{% endif %} mb-5">
+                    <div class="w-full">
+                        {{ message }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="bg-base-100 rounded-xl shadow-custom">
+            <div class="bg-primary text-base-100 text-center py-3 rounded-t-xl">
+                <div>
+                    <i class="fa-solid fa-paw text-2xl mr-1"></i>
+                    <span class="font-semibold text-xl">Right Meow</span>
+                </div>
+                <div class="text-sm font-semibold tracking-wide">An exciting social media</div>
+                <div class="text-sm font-semibold tracking-wide">for your antisocial pet</div>
+            </div>
+            {% block content %}{% endblock content %}
+        </div>
+    </div>
+    {% block javascript %}{% endblock javascript %}
+</body>
+</html>

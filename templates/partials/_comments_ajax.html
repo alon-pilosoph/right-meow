@@ -1,0 +1,53 @@
+<script>
+    $(document).ready(() => {
+        $('#comment-form').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'create_comment' %}",
+                data: {
+                    post_id: {{ post.id }},
+                    text: $('#input-comment').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(json) {
+                    $('#input-comment').val('')
+                    $('#input-comment').css('height', 'auto')
+                    $(json['html']).insertBefore('#comment')
+                    let comments = parseInt(json['count'])
+                    let res = '';
+                    if (comments === 1) {
+                        res = `1 Comment`
+                    } else if (comments > 1) {
+                        res = `${comments} Comments`
+                    }
+                    $('#comment-count').text(res)
+                }
+            });
+        });
+
+        $('#comments').on('click', '.delete-comment', function(e) {
+            const deleteButton = $(this)
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'delete_comment' %}",
+                data: {
+                    id: deleteButton.val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(json) {
+                    $('#comment' + deleteButton.val()).remove();
+                    let comments = parseInt(json['count'])
+                    let res = '';
+                    if (comments === 1) {
+                        res = `1 Comment`
+                    } else if (comments > 1) {
+                        res = `${comments} Comments`
+                    }
+                    $('#comment-count').text(res)
+                }
+            });
+        });
+    });
+</script>

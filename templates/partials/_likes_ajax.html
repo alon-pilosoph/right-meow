@@ -1,0 +1,76 @@
+<script>
+    $(document).ready(() => {
+        $(document).on('click', '.like-button', function(e) {
+            const likeButton = $(this)
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'like_post' %}",
+                data: {
+                    id: likeButton.val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(json) {
+                    let likes = parseInt(json['result'])
+                    let res = '';
+                    if (likes === 1) {
+                        res = `1 Like`
+                    } else if (likes > 1) {
+                        res = `${likes} Likes`
+                    }
+                    likeButton.parent().parent().prev().find('.likes').text(res)
+                    if (json['action'] === 'like') {
+                        likeButton.parent().removeClass('text-accent')
+                        likeButton.parent().addClass('text-error')
+                        likeButton.parent().attr('data-tip', 'Unlike')
+                    } else {
+                        likeButton.parent().removeClass('text-error')
+                        likeButton.parent().addClass('text-accent')
+                        likeButton.parent().attr('data-tip', 'Like')
+                    }
+                }
+            });
+        });
+
+        $('#comments').on('click', '.like-comment', function(e) {
+            const likeButton = $(this)
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'like_comment' %}",
+                data: {
+                    id: likeButton.val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(json) {
+                    let likes = parseInt(json['result'])
+                    let res = '';
+                    if (likes > 0) {
+                        res = `<i class="text-error fa-solid fa-heart ml-2 mr-1"></i>${likes}`
+                    }
+                    likeButton.parent().prev().find('.comment-likes').html(res)
+                    if (json['action'] === 'like') {
+                        likeButton.addClass('link-primary')
+                    } else {
+                        likeButton.removeClass('link-primary')
+                    }
+                }
+            });
+        });
+        
+        $(document).on('click', '.like-list-label', function(e) {
+            const label = $(this)
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'get_likes' %}",
+                data: {
+                    target: label.attr('data-target'),
+                    id: label.attr('data-id')
+                },
+                success: function(json) {
+                    $("#like-list").html(json);
+                }
+            });
+        });
+    });
+</script>

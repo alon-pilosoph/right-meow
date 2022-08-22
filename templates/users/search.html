@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Search - Right Meow</title>
+{% endblock title %}
+
+{% block content %}
+<div class="flex flex-col bg-base-100 w-full rounded-xl shadow-custom p-3 mb-5">
+    <input id="searchbar" type="text" class="focus:outline-0 w-full" placeholder="Search Right Meow" autocomplete="off">
+</div>
+<div id="results" class="hidden bg-base-100 w-full rounded-xl shadow-custom p-3 mb-5"></div>
+{% endblock content %}
+
+{% block javascript %}
+<script>
+    $(document).ready(() => {
+        $('#searchbar').on('input', function () {
+            const q = $(this).val();
+            if (q.length > 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'search_profiles' %}",
+                    data: {
+                        q: $(this).val(),
+                    },
+                    success: function(json) {
+                        if (json["results"] > 0) {
+                            $("#results").show();
+                            $("#results").html(json["html"]);
+                        } else {
+                            $("#results").hide();
+                        }
+                    }
+                });
+            } else {
+                $("#results").hide();
+            }
+        });
+    });
+</script>
+{% endblock javascript %}

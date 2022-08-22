@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-base-100 flex flex-col rounded-xl shadow-custom mb-5">
+    <div class="flex flex-row items-center">
+        <img class="profile-pic w-28 h-28 rounded-full m-3" src="{{ user.profile.picture.url }}">
+        <div class="flex flex-col justify-center">
+            <span class="font-semibold text-lg">Edit Profile</span>
+            <span class="text-gray-400 italic">{{ profile.user.username }}</span>
+        </div>
+    </div>
+    <form action="" method="POST" enctype='multipart/form-data' novalidate>
+        <div class="flex flex-col p-3">
+            {% csrf_token %}
+            <div>
+                <button id="upload-button" type="button" class="btn btn-sm no-animation"><i
+                        class="fa-solid fa-image text-lg sm:mr-2"></i><span
+                        class="invisible sm:visible">Image</span></button>
+                <input name="{{ form.picture.html_name }}" type="file" class="hidden" id="upload-input">
+            </div>
+            {% for error in form.picture.errors %}
+                <div class="text-error text-sm">{{ error }}</div>
+            {% endfor %}
+            <label for="{{ form.name.id_for_label }}" class="font-semibold mt-2">{{ form.name.label }}*</label>
+            <input name="{{ form.name.html_name }}" type="text"
+                class="input text-base {% if form.name.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+                id="{{ form.name.id_for_label }}" value="{{ profile.name }}" required>
+            {% for error in form.name.errors %}
+                <div class="text-error text-sm">{{ error }}</div>
+            {% endfor %}
+            <label for="{{ form.about.id_for_label }}" class="font-semibold mt-2">{{ form.about.label }}</label>
+            <textarea name="{{ form.about.html_name }}"
+                class="textarea text-base {% if form.about.errors %}textarea-error{% else %}textarea-primary{% endif %} w-full my-1"
+                id="{{ form.about.id_for_label }}"
+                rows="5">{% if profile.about %}{{ profile.about }}{% endif %}</textarea>
+            {% for error in form.about.errors %}
+                <div class="text-error text-sm">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="flex flex-row">
+            <a class="btn btn-neutral no-animation w-1/2 rounded-none rounded-bl-xl"
+                href="{{ user.profile.get_absolute_url }}">Cancel</a>
+            <button type="submit" class="btn btn-primary no-animation w-1/2 rounded-none rounded-br-xl">Update</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script>
+    $(document).ready(() => {
+        $('#upload-button').on('click', () => {
+            $('#upload-input').click();
+        });
+
+        $('#upload-input').change((e) => {
+            if (e.target.value.length > 0) {
+                $('#upload-button').addClass('btn-primary');
+            } else {
+                $('#upload-button').removeClass('btn-primary');
+            }
+        });
+    });
+</script>
+{% endblock javascript %}

@@ -1,0 +1,13 @@
+{% for profile in profiles %}
+    <div class="hover:bg-indigo-100 p-2">
+        <a href="{{ profile.get_absolute_url }}">
+            <div class="flex flex-row items-center">
+                <img class="profile-pic w-16 h-16 rounded-full" src="{{ profile.picture.url }}">
+                <div class="user-text group flex flex-col ml-2">
+                    <span class="font-semibold">{{ profile.name }}</span>
+                    <span class="text-gray-400 italic">{{ profile.user.username }}</span>
+                </div>
+            </div>
+        </a>
+    </div>
+{% endfor %}

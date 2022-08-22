@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Settings - Right Meow</title>
+{% endblock title %}
+
+{% block content %}
+<div class="flex flex-col bg-base-100 w-full rounded-xl shadow-custom mb-5">
+    <h2 class="text-center text-2xl text-primary my-5">Account Settings</h2>
+    <form method="POST" action="" novalidate class="w-full">
+        {% csrf_token %}
+        <div class="px-3 pb-3">
+            <label for="{{ user_form.email.id_for_label }}" class="font-semibold">{{ user_form.email.label }}</label>
+            <input name="{{ user_form.email.html_name }}" type="email"
+                class="input text-base {% if user_form.email.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+                id="{{ user_form.email.id_for_label }}"{% if user_form.email.value %} value="{{user_form.email.value}}"{% endif %} required>
+            {% for error in user_form.email.errors %}
+                <div class="text-error text-sm">{{ error }}</div>
+            {% endfor %}
+            <div>
+                <label for="{{ tz_form.timezone.id_for_label }}" class="font-semibold mt-2">{{ tz_form.timezone.label }}*</label>
+            </div>
+            <select name="{{ tz_form.timezone.html_name }}" id="{{ tz_form.timezone.id_for_label }}"
+                class="select select-primary text-base">
+                {% for id, name in tz_form.fields.timezone.choices %}
+                    <option {% if tz_form.timezone.value==id %}selected {% endif %}value="{{ id }}">{{ name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-block btn-primary no-animation rounded-none rounded-b-xl"
+            name="settings">Update</button>
+    </form>
+</div>
+<div class="flex flex-col bg-base-100 w-full rounded-xl shadow-custom mb-5">
+    <h2 class="text-center text-2xl text-primary my-5">Change Password</h2>
+    <form method="POST" action="" novalidate class="w-full">
+        {% csrf_token %}
+        <div class="px-3 pb-3">
+            <label for="{{ pass_form.old_password.id_for_label }}" class="font-semibold">{{ pass_form.old_password.label }}*</label>
+            <input name="{{ pass_form.old_password.html_name }}" type="password"
+                class="input text-base {% if pass_form.old_password.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+                id="{{ pass_form.old_password.id_for_label }}" required>
+            {% for error in pass_form.old_password.errors %}
+                <div class="text-error text-sm">{{ error }}</div>
+            {% endfor %}
+            <label for="{{ pass_form.new_password1.id_for_label }}" class="font-semibold mt-2">{{ pass_form.new_password1.label }}*</label>
+            <input name="{{ pass_form.new_password1.html_name }}" type="password"
+                class="input text-base {% if pass_form.new_password1.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+                id="{{ pass_form.new_password1.id_for_label }}" required>
+            {% for error in pass_form.new_password1.errors %}
+                <div class="text-error text-sm">{{ error }}</div>
+            {% endfor %}
+            <label for="{{ pass_form.new_password2.id_for_label }}" class="font-semibold mt-2">{{ pass_form.new_password2.label }}*</label>
+            <input name="{{ pass_form.new_password2.html_name }}" type="password"
+                class="input text-base {% if pass_form.new_password2.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
+                id="{{ pass_form.new_password2.id_for_label }}" required>
+            {% for error in pass_form.new_password2.errors %}
+                <div class="text-error text-sm">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-block btn-primary no-animation rounded-none rounded-b-xl"
+            name="change_password">Change Password</button>
+    </form>
+    {% endblock content %}

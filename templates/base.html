@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static "favicon.svg" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static "css/output.css" %}">
+    <link rel="stylesheet" href="{% static "css/app.css" %}">
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    {% block head %}{% endblock head %}
+    {% block title %}
+    <title>Right Meow</title>
+    {% endblock title %}
+</head>
+<body>
+    <div class="w-full flex flex-row flex-wrap">
+        <div class="w-full flex flex-row flex-wrap justify-center">
+            {% include 'partials/_footer.html' %}
+            {% include 'partials/_navbar.html' %}
+            <main id="main" class="w-full p-5 pb-0 h-full mb-12 lg:mb-0">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert {% if 'error' in message.tags %}alert-error{% else %}alert-success{% endif %} mb-5">
+                            <div class="w-full">
+                                {{ message }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% block content %}{% endblock content %}
+            </main>
+        </div>
+    </div>
+    {% block javascript %}{% endblock javascript %}
+</body>
+</html>

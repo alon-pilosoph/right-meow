@@ -1,0 +1,34 @@
+<div class="flex flex-row items-start bg-base-100 w-full rounded-xl shadow-custom p-3 mb-5">
+    <a href="{{ user.profile.get_absolute_url }}" class="rounded-full flex-shrink-0 mr-3">
+        <img class="profile-pic w-16 h-16 rounded-full" src="{{ user.profile.picture.url }}">
+    </a>
+    <form class="w-full flex flex-col" method="POST" action="" enctype='multipart/form-data' novalidate>
+        {% csrf_token %}
+        <textarea name="{{ form.text.html_name }}" class="bg-neutral w-full rounded-xl shadow focus:outline-0 p-2"
+            rows="2" placeholder="Speak your mind..." maxlength="250"
+            required>{% if form.text.value %}{{ form.text.value }}{% endif %}</textarea>
+        {% for error in form.text.errors %}
+            <div class="text-error text-sm">{{ error }}</div>
+        {% endfor %}
+        <div class="flex flex-row items-start justify-between mt-3">
+            <div class="form-control mr-1">
+                <label class="label cursor-pointer p-0">
+                    <input type="checkbox" name="{{ form.public.html_name }}" class="toggle toggle-primary" checked>
+                    <span class="label-text ml-1">{{ form.public.label }}</span>
+                </label>
+            </div>
+            <div class="flex flex-row items-center">
+                <div class="mr-2">
+                    <button id="upload-button" type="button" class="btn btn-sm no-animation"><i
+                            class="fa-solid fa-image text-lg sm:mr-2"></i><span
+                            class="hidden sm:inline">Image</span></button>
+                    <input name="{{ form.image.html_name }}" type="file" class="hidden" id="upload-input">
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary no-animation text-base-100">Post</button>
+            </div>
+        </div>
+        {% for error in form.image.errors %}
+            <div class="text-error text-sm w-full mt-1">{{ error }}</div>
+        {% endfor %}
+    </form>
+</div>

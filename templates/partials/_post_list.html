@@ -1,0 +1,79 @@
+{% load humanize %}
+
+{% for post in posts %}
+    <div class="infinite-item post flex flex-col bg-base-100 rounded-xl shadow-custom mb-5">
+        <div class="flex flex-row items-start justify-between">
+            <div class="flex flex-row items-center">
+                <a href="{{ post.author.get_absolute_url }}" class="rounded-full flex-shrink-0 m-3 mr-2">
+                    <img class="profile-pic w-16 h-16 rounded-full" src="{{ post.author.picture.url }}">
+                </a>
+                <div class="user-text">
+                    <p class="font-semibold">
+                        <a href="{{ post.author.get_absolute_url }}" class="link link-hover">{{ post.author.name }}</a>
+                    </p>
+                    <div class="flex flex-row text-sm text-accent">
+                        {% if post.public %}
+                            <span class="tooltip tooltip-accent tooltip-bottom" data-tip="Public">
+                                <i class="fa-solid fa-earth-americas"></i>
+                            </span>
+                        {% else %}
+                            <span class="tooltip tooltip-accent tooltip-bottom" data-tip="Private">
+                                <i class="fa-solid fa-user-group"></i>
+                            </span>
+                        {% endif %}
+                        <div class="tooltip tooltip-bottom tooltip-accent cursor-default ml-1"
+                            data-tip="{{ post.last_modified|date:" M j, Y \a\t g:i A" }}">
+                            <span class="text-sm text-accent">{{ post.last_modified|naturaltime }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tooltip tooltip-accent flex-shrink-0 m-3" data-tip="View post">
+                <a href="{{ post.get_absolute_url }}"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            </div>
+        </div>
+        {% if post.image %}
+            <a class="py-3 pt-0 w-full" href="{{ post.get_absolute_url }}"><img class="w-full" src="{{ post.image.url }}"></a>
+        {% endif %}
+        <div class="user-text text-lg font-semibold p-3 pt-0">
+            {{ post.text|linebreaks }}
+        </div>
+        <div class="flex flex-row justify-between px-3 py-1">
+            <label for="likes-modal" class="like-list-label link link-hover" data-id="{{ post.id }}" data-target="post">
+                <span class="likes">
+                    {% if post.total_likes %}
+                        {{ post.total_likes }} Like{% if post.total_likes > 1 %}s{% endif %}
+                    {% endif %}
+                </span>
+            </label>
+            <a href="{{ post.get_absolute_url }}#comments" class="link link-hover">
+                <span>
+                    {% if post.total_comments %}
+                        {{ post.total_comments }} Comment{% if post.total_comments > 1 %}s{% endif %}
+                    {% endif %}
+                </span>
+            </a>
+        </div>
+        <div class="border-t flex flex-row">
+            <div class="tooltip tooltip-accent w-1/2 rounded-bl-xl border-r hover:bg-indigo-100 text-center hover:text-error{% if user.profile in post.likes.all %} text-error{% else %} text-accent{% endif %}"
+                data-tip="{% if user.profile in post.likes.all %}Unlike{% else %}Like{% endif %}">
+                <button class="like-button fa-solid fa-heart rounded-bl-xl text-xl py-2 w-full"
+                    value="{{post.id}}"></button>
+            </div>
+            <div class="tooltip tooltip-accent w-1/2 rounded-br-xl hover:bg-indigo-100 text-center text-accent hover:text-primary"
+                data-tip="Comment">
+                <a href="{{ post.get_absolute_url }}#comment"
+                    class="fa-solid fa-comment rounded-br-xl text-xl py-2 w-full"></a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<input type="checkbox" id="likes-modal" class="modal-toggle" autocomplete="off">
+<div class="modal">
+    <div class="modal-box relative">
+        <label for="likes-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <h3 class="text-lg font-bold mb-3">Likes</h3>
+        <div id="like-list"></div>
+    </div>
+</div>

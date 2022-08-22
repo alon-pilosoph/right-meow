@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+{% endblock head %}
+
+{% block content %}
+{% include 'partials/_post_form.html' %}
+<div id="posts" class="infinite-container flex flex-col">
+    {% include 'partials/_post_list.html' %}
+</div>
+{% if page_obj.has_next %}
+    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
+{% endif %}
+<div class="w-full text-center">
+    <progress class="loading progress progress-primary hidden text-center w-56 py-5"></progress>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+{% include 'partials/_likes_ajax.html' %}
+<script>
+    var infinite = new Waypoint.Infinite({
+        element: $('.infinite-container')[0],
+        onBeforePageLoad: function () {
+            $('.loading').show();
+        },
+        onAfterPageLoad: function () {
+            $('.loading').hide();
+        }
+    });
+</script>
+<script>
+    $(document).ready(() => {
+        $('#upload-button').on('click', () => {
+            $('#upload-input').click();
+        });
+        
+        $('#upload-input').change((e) => {
+            if (e.target.value.length > 0) {
+                $('#upload-button').addClass('btn-primary');
+            } else {
+                $('#upload-button').removeClass('btn-primary');
+            }
+        });
+
+        $('textarea').on('input', function () {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    });
+</script>
+{% endblock javascript %}
