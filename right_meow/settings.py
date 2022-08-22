@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+import django_heroku
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +21,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-wmki41*xd3cm$v-dq@fl$!cg4)*1ynx#$pln#(m31@-e=!8pz1"
+# SECRET_KEY = "django-insecure-wmki41*xd3cm$v-dq@fl$!cg4)*1ynx#$pln#(m31@-e=!8pz1"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -150,3 +152,5 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_FILE_OVERWRITE = False
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+django_heroku.settings(locals())
