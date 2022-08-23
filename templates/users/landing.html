@@ -13,11 +13,11 @@
 <div id="login-form" class="{% if tab != "login" %}hidden {% endif %}p-3">
     <form method="POST" class="flex flex-col w-full" novalidate>
         {% csrf_token %}
-        <label for="{{ login_form.username.id_for_label }}" 
+        <label for="{{ login_form.username.id_for_label }}_login" 
             class="font-semibold">{{ login_form.username.label }}*</label>
         <input name="{{ login_form.username.html_name }}" type="text"
             class="input text-base {% if login_form.username.errors %}input-error{% else %}input-primary{% endif %} w-full my-1"
-            id="{{ login_form.username.id_for_label }}"{% if login_form.username.value %} value="{{ login_form.username.value }}"{% endif %} required>
+            id="{{ login_form.username.id_for_label }}_login"{% if login_form.username.value %} value="{{ login_form.username.value }}"{% endif %} required>
         {% for error in login_form.username.errors %}
             <div class="text-error text-sm">{{ error }}</div>
         {% endfor %}
