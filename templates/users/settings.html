@@ -24,7 +24,7 @@
             <select name="{{ tz_form.timezone.html_name }}" id="{{ tz_form.timezone.id_for_label }}"
                 class="select select-primary text-base">
                 {% for id, name in tz_form.fields.timezone.choices %}
-                    <option {% if tz_form.timezone.value==id %}selected {% endif %}value="{{ id }}">{{ name }}</option>
+                    <option {% if tz_form.timezone.value == id %}selected {% endif %}value="{{ id }}">{{ name }}</option>
                 {% endfor %}
             </select>
         </div>
