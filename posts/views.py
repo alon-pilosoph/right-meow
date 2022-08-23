@@ -206,7 +206,7 @@ def create_comment(request):
             # User can comment if they are following the post's author, if they are the author of if post is public
             if not (
                 post.author.following.filter(id=request.user.profile.id).exists()
-                or post.author == request.user.request.profile
+                or post.author == request.user.profile
                 or post.public
             ):
                 return HttpResponseForbidden("Private post")
