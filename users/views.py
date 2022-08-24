@@ -195,7 +195,7 @@ def search_profiles(request):
             q = request.GET.get("q")
             # Find profiles that query is included in their name or username of their associated user
             profiles = Profile.objects.filter(
-                Q(name__contains=q) | Q(user__username__contains=q)
+                Q(name__icontains=q) | Q(user__username__icontains=q)
             )
             # Send a json response with partial template that lists the matched profiles
             html = render_to_string(
