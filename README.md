@@ -22,7 +22,7 @@ Right Meow is a social media app for cats and cat owners. Users can register, se
 - jQuery
 - Django
 - Node.js
-- PostgresSQL
+- PostgreSQL
 - Media hosted on AWS S3
 - Deployed on Heroku
 
