@@ -29,7 +29,7 @@ Right Meow is a social media app for cats and cat owners. Users can register, se
 
 ## Features
 - Responsive mobile-first design built from scratch
-- Fully functional post, comment and like systems
+- Fully functional posts, comments and likes system
 - Likes and comments created with AJAX calls
 - Live search
 - Infinite scroll with Waypoint
