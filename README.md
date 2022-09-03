@@ -1,22 +1,24 @@
 # Right Meow
-> A social media for cats built with Django.
+
+> A social media for cats, built with Django.
 > Live demo [here](https://right-meow.herokuapp.com/).
 
 ## Table of Contents
-* [General Info](#general-information)
-* [Technologies Used](#technologies-used)
-* [Features](#features)
-* [Screenshots](#screenshots)
-* [Setup](#setup)
-* [Usage](#usage)
-* [Acknowledgements](#acknowledgements)
 
+- [General Info](#general-information)
+- [Technologies Used](#technologies-used)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Acknowledgements](#acknowledgements)
 
 ## General Information
+
 Right Meow is a social media app for cats and cat owners. Users can register, search for other users and follow or unfollow them. They can also upload posts, comment on posts and like posts and comments. A post consists of a short text (up to 250 characters) with an optional image. Additionally, users can edit their profile page and manage their account settings.
 
-
 ## Technologies Used
+
 - HTML, CSS, JavaScript
 - Tailwind CSS, daisyUI
 - jQuery
@@ -26,8 +28,8 @@ Right Meow is a social media app for cats and cat owners. Users can register, se
 - Media hosted on AWS S3
 - Deployed on Heroku
 
-
 ## Features
+
 - Responsive mobile-first design built from scratch
 - Fully functional post, comment and like systems
 - Likes and comments created with AJAX calls
@@ -39,8 +41,8 @@ Right Meow is a social media app for cats and cat owners. Users can register, se
 - Extensive use of class-based views and mixins
 - Custom middleware
 
-
 ## Screenshots
+
 <p align="center">
   <img src="screenshots/right_meow_landing.png" alt="Landing Page"/>
 </p>
@@ -54,18 +56,22 @@ Right Meow is a social media app for cats and cat owners. Users can register, se
   <img src="screenshots/right_meow_mobile.png" alt="Mobile Profile Page"/>
 </p>
 
-
 ## Setup
+
 To run locally:
+
 1. Set up an [AWS S3 Bucket](https://aws.amazon.com/s3/).
 2. Run the following commands:
+
 ```
 git clone https://github.com/alon-pilosoph/benchmate.git
 cd right_meow
 npm install
 pip install -r requirements.txt
 ```
+
 3. Set the following environment variables:
+
 ```
 AWS_ACCESS_KEY_ID=<id>
 AWS_SECRET_ACCESS_KEY=<key>
@@ -76,17 +82,21 @@ MAIL_USERNAME=<username>
 MAIL_PASSWORD=<password>
 ```
 
-
 ## Usage
+
 1. Navigate to the project's root folder
 2. On one terminal, run:
+
 ```
 npm run tailwind-watch
 ```
+
 3. On another terminal, run:
+
 ```
 python manage.py runserver
 ```
+
 4. Visit development sever at http://127.0.0.1:8000/
 
 Users need to be registed and logged in to access the app. Go to 'Register' to create an account.\
