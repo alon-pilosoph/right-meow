@@ -1,14 +1,15 @@
+from io import BytesIO
+from os import listdir
+from os.path import basename, isfile, join, splitext
+from random import choice
+
+import pytz
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.db import models
 from django.urls import reverse
-from io import BytesIO
-from os import listdir
-from os.path import basename, isfile, join, splitext
 from PIL import Image, ImageOps
-import pytz
-from random import choice
 
 
 def random_img():

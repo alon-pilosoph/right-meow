@@ -1,7 +1,8 @@
 from django.urls import path
 from django.views.decorators.cache import never_cache
+
 from . import views
-from .views import PostListView, PostDetailView, PostUpdateView, PostDeleteView
+from .views import PostDeleteView, PostDetailView, PostListView, PostUpdateView
 
 urlpatterns = [
     path("", never_cache(PostListView.as_view()), name="home"),

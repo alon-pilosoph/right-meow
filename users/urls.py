@@ -1,9 +1,9 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
 from django.views.decorators.cache import never_cache
+
 from . import views
 from .views import CustomPasswordResetView, ProfileDetailView, ProfileUpdateView
-
 
 urlpatterns = [
     path(

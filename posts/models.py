@@ -1,11 +1,13 @@
+from io import BytesIO
+from os.path import basename, splitext
+
 from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from io import BytesIO
-from os.path import basename, splitext
 from PIL import Image, ImageOps
+
 from users.models import Profile
 
 

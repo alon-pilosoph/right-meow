@@ -6,10 +6,11 @@ from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import DeleteView, DetailView, ListView, UpdateView
 from django.views.generic.edit import FormMixin
+
 from .forms import PostForm
-from .models import Post, Comment
+from .models import Comment, Post
 
 
 class PostListView(LoginRequiredMixin, FormMixin, ListView):

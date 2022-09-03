@@ -6,7 +6,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
-from posts.forms import PostForm
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import slugify
@@ -15,10 +14,12 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView
 from django.views.generic.edit import FormMixin
 from django.views.generic.list import MultipleObjectMixin
+from posts.forms import PostForm
+
 from .forms import (
-    UserRegistrationForm,
     ProfileCreationForm,
     ProfileTimezoneForm,
+    UserRegistrationForm,
     UserUpdateForm,
 )
 from .models import Profile
