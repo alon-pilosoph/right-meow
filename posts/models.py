@@ -12,7 +12,8 @@ from users.models import Profile
 
 
 def validate_file_size(value):
-    """Method that validates the size of the Post model's ImageField"""
+    """Method that validates the size of the post image"""
+
     filesize = value.size
     # If filesize is over 10MB, raise ValidationError
     if filesize > 10 * 1024 * 1024:
@@ -46,6 +47,7 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         """Method that reduces the image quality before saving the model instance."""
+
         # If instance has no id (post was just created) or instace image was changed
         if self.id is None or Post.objects.get(id=self.id).image != self.image:
             filename, extension = splitext(basename(self.image.name))

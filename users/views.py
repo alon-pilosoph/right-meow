@@ -44,9 +44,9 @@ def landing(request):
             user = login_form.get_user()
             login(request, user)
             # Redirect to next page if it exists
-            next_page = request.GET.get("next")
+            next_page = request.GET.get("next", "home")
             messages.success(request, f"You logged in successfully!")
-            return redirect(next_page if next_page else "home")
+            return redirect(next_page)
         else:
             # If form is invalid, add error message(s)
             for error in login_form.non_field_errors():
@@ -100,12 +100,11 @@ class ProfileDetailView(LoginRequiredMixin, FormMixin, DetailView, MultipleObjec
 
     model = Profile
     paginate_by = 5
-    slug_field = "slug"
     template_name = "users/profile_detail.html"
     form_class = PostForm
 
     def get_context_data(self, **kwargs):
-        # Add associated profiles to context data
+        # Add associated posts to context data
         # If current user is following the profile viewed
         if self.object in self.request.user.profile.following.all():
             # Show all of that profile's posts
@@ -132,8 +131,7 @@ class ProfileDetailView(LoginRequiredMixin, FormMixin, DetailView, MultipleObjec
     def form_valid(self, form):
         # If form is valid, set the author of the post to the current user
         form.instance.author = self.request.user.profile
-        form.save()
-        return super(ProfileDetailView, self).form_valid(form)
+        return super().form_valid(form)
 
 
 class ProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -141,7 +139,6 @@ class ProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     model = Profile
     fields = ["name", "picture", "about"]
-    slug_field = "slug"
     template_name = "users/profile_update.html"
 
     def form_valid(self, form):
@@ -158,6 +155,7 @@ class ProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 @login_required
 def follow(request, slug):
     """View that handles follow requests"""
+
     # Find profile with slug
     profile = get_object_or_404(Profile, slug=slug)
     # If request method is POST, add profile to user's following field
@@ -170,6 +168,7 @@ def follow(request, slug):
 @login_required
 def unfollow(request, slug):
     """View that handles unfollow requests"""
+
     # Find profile with slug
     profile = get_object_or_404(Profile, slug=slug)
     # If request method is POST, remove profile from user's following field
@@ -182,19 +181,21 @@ def unfollow(request, slug):
 @login_required
 def search(request):
     """View that renders search page"""
+
     return render(request, "users/search.html")
 
 
 @login_required
 def search_profiles(request):
     """View that receives AJAX GET requests with query string and responds with search results"""
+
     # Make sure the request is ajax
     is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
     if is_ajax:
         if request.method == "GET":
             # Get query from request
             q = request.GET.get("q")
-            # Find profiles that query is included in their name or username of their associated user
+            # Find profiles that include the query string in their name or in the username of their associated user
             profiles = Profile.objects.filter(
                 Q(name__icontains=q) | Q(user__username__icontains=q)
             )
@@ -210,6 +211,7 @@ def search_profiles(request):
 @login_required
 def settings(request):
     """View that handles user and timezone settings, as well as changing user password"""
+
     # POST request from the page's settings form
     if request.method == "POST" and "settings" in request.POST:
         # populate forms with POST data
@@ -262,14 +264,17 @@ class CustomPasswordResetView(SuccessMessageMixin, PasswordResetView):
 
 def custom_error_404(request, exception, template_name="errors/404.html"):
     """View that handles 404 errors"""
+
     return render(request, template_name)
 
 
 def custom_error_403(request, exception, template_name="errors/403.html"):
     """View that handles 403 errors"""
+
     return render(request, template_name)
 
 
 def custom_error_500(request, template_name="errors/500.html"):
     """View that handles 500 errors"""
+
     return render(request, template_name)

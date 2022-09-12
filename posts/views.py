@@ -77,9 +77,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def get_context_data(self, **kwargs):
         # Add current post image to context data to render on update form
         context = super().get_context_data(**kwargs)
-        post = Post.objects.get(id=self.object.id)
-        if post:
-            context["current_image"] = post.image
+        context["current_image"] = self.get_object().image
         return context
 
     def test_func(self):
@@ -102,7 +100,8 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 @login_required
 def like_post(request):
-    """View that receives AJAX POST requests and adds a like to a post or subtracts a like from it"""
+    """View that receives AJAX POST requests and adds a like to a post or removes a like from it"""
+
     # Make sure the request is ajax
     is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
     if is_ajax:
@@ -121,12 +120,10 @@ def like_post(request):
             # If user already liked post, remove like from post
             if post.likes.filter(id=request.user.profile.id).exists():
                 post.likes.remove(request.user.profile)
-                post.save()
                 action = "unlike"
             else:
                 # Otherwise, add like to post
                 post.likes.add(request.user.profile)
-                post.save()
                 action = "like"
             return JsonResponse({"result": post.total_likes, "action": action})
     else:
@@ -136,6 +133,7 @@ def like_post(request):
 @login_required
 def like_comment(request):
     """View that receives AJAX POST requests and adds a like to a comment or subtracts a like from it"""
+
     # Make sure the request is ajax
     is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
     if is_ajax:
@@ -156,12 +154,10 @@ def like_comment(request):
             # If user already liked comment, remove like from post
             if comment.likes.filter(id=request.user.profile.id).exists():
                 comment.likes.remove(request.user.profile)
-                comment.save()
                 action = "unlike"
             else:
                 # Otherwise, add like to comment
                 comment.likes.add(request.user.profile)
-                comment.save()
                 action = "like"
             return JsonResponse({"result": comment.total_likes, "action": action})
     else:
@@ -171,6 +167,7 @@ def like_comment(request):
 @login_required
 def get_likes(request):
     """View that receives AJAX GET requests and returns list of profiles who liked the resource"""
+
     # Make sure the request is ajax
     is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
     if is_ajax:
@@ -197,6 +194,7 @@ def get_likes(request):
 @login_required
 def create_comment(request):
     """View that receives AJAX POST requests and creates and renders comments"""
+
     # Make sure the request is ajax
     is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
     if is_ajax:
@@ -233,6 +231,7 @@ def create_comment(request):
 @login_required
 def delete_comment(request):
     """View that receives AJAX POST requests and deletes comments"""
+
     # Make sure the request is ajax
     is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
     if is_ajax:

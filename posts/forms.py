@@ -4,6 +4,7 @@ from .models import Post
 
 
 class PostForm(forms.ModelForm):
+
     """Model form for posts"""
 
     class Meta:

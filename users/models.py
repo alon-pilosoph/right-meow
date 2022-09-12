@@ -14,6 +14,7 @@ from PIL import Image, ImageOps
 
 def random_img():
     """Method that returns a random image from the default profile pictures folder"""
+
     dir_path = join("media", "profile_pics", "default")
     files = [
         content for content in listdir(dir_path) if isfile(join(dir_path, content))
@@ -22,7 +23,8 @@ def random_img():
 
 
 def validate_file_size(value):
-    """Method that validates the size of the Profile model's ImageField"""
+    """Method that validates the size of the profile picture"""
+
     filesize = value.size
     # If filesize is over 10MB, raise ValidationError
     if filesize > 10 * 1024 * 1024:
@@ -55,6 +57,7 @@ class Profile(models.Model):
 
     def save(self, *args, **kwargs):
         """Method that reduces the image quality before saving the model instance."""
+
         # If instace has an id field (if it was already saved)
         if self.id is not None:
             this_profile = Profile.objects.get(id=self.id)
@@ -73,6 +76,7 @@ class Profile(models.Model):
                     # Save image as jpg
                     new_image = File(output, name=filename + ".jpg")
                     self.picture = new_image
+
         super().save(*args, **kwargs)
 
     def __str__(self):
