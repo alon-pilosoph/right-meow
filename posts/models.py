@@ -64,6 +64,7 @@ class Post(models.Model):
                 # Save image as jpg
                 new_image = File(output, name=filename + ".jpg")
                 self.image = new_image
+                
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
