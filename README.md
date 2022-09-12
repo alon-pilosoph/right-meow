@@ -1,6 +1,6 @@
 # Right Meow
 
-> A social media for cats, built with Django.
+> A social media for cats, built with Django.  
 > Live demo [here](https://right-meow.herokuapp.com/).
 
 ## Table of Contents
